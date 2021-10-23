@@ -1,13 +1,50 @@
 {% extends "base.html" %}
 {% block body %}
+
+
 <label for="Upload files">Select files:</label>
 <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
-
-<form action = "http://localhost:5000/user_id/upload_images" method = "POST" 
+<form action = "/user_id/upload_images" method = "POST" 
     enctype = "multipart/form-data" target="dummyframe">
          <input type = "file" id="files" name = "file[]" multiple/>
          <input type = "submit"/>
 </form><br><br>
 <input type="text" id="search_bar" name="search_bar">
-<button text="search" type="button" class="btn btn-primary">Search</button>
+<button text="search" type="button" class="btn btn-primary" onclick="get_result()">Search</button><br><br>
+
+<table id="result_table"></table>
+<script>
+
+function get_result(){
+    search_str = document.getElementById('search_bar').value;
+    fetch('/user_id/search/' + search_str, {
+           'Access-Control-Allow-Origin':  'http://localhost:5000',
+           'Access-Control-Allow-Credentials': 'true'
+         }).then((r) => {
+        return r.json();
+    }).then(function(data) {
+        process_result(data);
+    }).catch(function(e) {
+        console.log("Booo");
+        console.log(e);
+    });
+}
+function process_result(res){
+    //console.log(res);
+    $("#result_table tr").remove(); 
+    var add_string = "<tr><th>Store</th><th>Date</th><th>Item</th><th>Price</th></tr>"
+    for (const data of res['data']) {
+        add_string += '<tr>';
+        for (const d of data){
+            add_string += '<td>';
+            add_string += d;
+            add_string += '</td>';   
+        }
+        add_string += '</tr>';
+    }
+    $('#result_table').html(add_string);
+    //console.log(add_string);
+    
+}
+</script>
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for, jsonify
 import sys
 app = Flask(__name__)
 
@@ -21,7 +21,8 @@ def process_images():
 
 @app.route('/user_id/search/<search_str>', methods = ['GET'])
 def get_list(search_str):
-  pass
+  sample_list = [('Publix','2020/11/13','chicken','12'),('SQ5','2020/11/11','chicken','15')]
+  return jsonify({'data': sample_list})
 
 #  return 
 if __name__ == '__main__':
