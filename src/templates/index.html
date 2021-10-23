@@ -1,4 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
-<button type="button" class="btn btn-primary">Button</button>
+<label for="Upload files">Select files:</label>
+<input type="file" id="files" name="files" multiple><br><br><br><br>
+<input type="text" id="search_bar" name="search_bar">
+<button text="search" type="button" class="btn btn-primary">Search</button>
 {% endblock %}
