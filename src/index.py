@@ -1,10 +1,11 @@
 from flask import Flask, render_template
 app = Flask(__name__)
 
+from .receipt_recognition import get_items
 
 @app.route('/')
 def index():
-  return render_template('index.html',)
+  return render_template('index.html')
 
 @app.route('/user_id/image', methods = ['POST'])
 def process_image():
