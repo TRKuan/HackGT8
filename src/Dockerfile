@@ -3,7 +3,7 @@ FROM python:3.8
 # Set working directory
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
-ADD requirements.txt /usr/src/app/requirements.txt
+COPY . /usr/src/app/
 
 # Install required packages
 RUN pip install --no-cache-dir --upgrade pip
