@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 {% block body %}
 <label for="Upload files">Select files:</label>
-<input type="file" id="files" name="files" multiple><br><br><br><br>
+<iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+
+<form action = "http://localhost:5000/user_id/upload_images" method = "POST" 
+    enctype = "multipart/form-data" target="dummyframe">
+         <input type = "file" id="files" name = "file[]" multiple/>
+         <input type = "submit"/>
+</form><br><br>
 <input type="text" id="search_bar" name="search_bar">
 <button text="search" type="button" class="btn btn-primary">Search</button>
 {% endblock %}
