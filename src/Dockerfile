@@ -10,4 +10,5 @@ RUN pip install --no-cache-dir --upgrade pip
 RUN pip install -r requirements.txt
 
 # Start Flask app along with .env settings
+EXPOSE 5000
 ENTRYPOINT ./bootstrap.sh
