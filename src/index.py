@@ -1,11 +1,48 @@
 from flask import Flask, render_template, request
+from sqlalchemy.dialects.postgresql import UUID
+from flask_sqlalchemy import SQLAlchemy
+import logging
+import uuid
 import sys
+from .receipt_recognition import get_items
+
+
 app = Flask(__name__)
 
-from .receipt_recognition import get_items
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:asdf1234@HACKGT8db/HACKGT8'
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.secret_key = 'secret string'
+
+db = SQLAlchemy(app)
+
+class Item(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(UUID(as_uuid=True), default=uuid.uuid4)
+    store_name = db.Column(db.String(100))
+    date = db.Column(db.DateTime)
+    price = db.Column(db.Float)
+    count = db.Column(db.Integer)
+    item_name = db.Column(db.String(100))
+    catagory = db.Column(db.String(100))
+
+    def __init__(self, user_id, item_name, price, catagory):
+        self.user_id = user_id
+        self.item_name = item_name
+        self.price = price
+        self.catagory = catagory
+
+db.create_all()
+db.session.commit()
 
 @app.route('/')
 def index():
+  # Create item for test usage
+  # testItem = Item('16fd2706-8baf-433b-82eb-8c7fada847da', 'item_name', 10, 'catagory')
+  # db.session.add(testItem)
+  # db.session.commit()
+  items = Item.query.all()
+  app.logger.info('%s items: ', items)
   return render_template('index.html')
 
 
@@ -26,3 +63,6 @@ def get_list(search_str):
 #  return 
 if __name__ == '__main__':
     app.run()
+
+
+app.run(debug = True)
