@@ -1,0 +1,56 @@
+# docker version
+version: '3.8'
+services:
+  db:
+    image: postgres:latest
+    container_name: HACKGT8db
+    ports:
+      - 5432:5432
+    networks:
+      - web_nw
+    volumes:
+      # volumes means the dir in container we want to store, if we dind
+      - pgdata:/var/lib/postgresql/data
+      # - ./initdb.d:/docker-entrypoint-initdb.d
+    env_file:
+      - .env
+    healthcheck:
+      test: pg_isready -U $POSTGRES_USER -d $POSTGRES_DB
+      start_period: 5s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: on-failure
+    
+  app:
+    build:
+      # context means the root folder, could be ./app/
+      context: .
+      # could also specific dockerfile if there is multiple dockerfiles
+      
+      # The network specified in build is different from network specified in run. The network specified in build is only for downloading packages that are necessary for building image. The network specified in run is for the containers itself.
+      # https://docs.docker.com/network/host/
+      network: host
+    container_name: HACKGT8Backend
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 5000:5000
+    networks:
+      - web_nw
+    volumes:
+      - .:/usr/src/app
+
+volumes:
+  # pgdata should assign pc path, if didn't assign then probably will use default path
+  # https://docs.docker.com/compose/compose-file/compose-file-v3/#volume-configuration-reference
+  pgdata:
+
+networks:
+  # bridge the container, but not sure how it works, default we could use container name to connect
+  # we could 
+  # https://docs.docker.com/network/
+  web_nw:
+    name: HACKGT8-backend
+    driver: bridge
