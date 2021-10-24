@@ -1,18 +1,28 @@
 {% extends "base.html" %}
 {% block body %}
 
+<div class="container" style="display: flex; justify-content: center; height: 100vh">
+    <div>
+        <div style="margin-bottom: 3rem; margin-top: 3rem;">
+            <div>
+                <label for="Upload files">Select files:</label>
+                <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+                <form action = "/user_id/upload_images" method = "POST" enctype = "multipart/form-data" target="dummyframe">
+                <input type = "file" id="files" name = "file[]" multiple/>
+                <input type = "submit" class="btn btn-dark"/>
+                </form>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: center; margin-bottom: 3rem;">
+            <input type="text" id="search_bar" name="search_bar" style="width: 100%;">
+            <button text="search" type="button" class="btn btn-dark" onclick="get_result()">Search</button>
+        </div>
+        <div style="display: flex; justify-content: center;">
+            <table id="result_table" style="width: 100%;"></table>
+        </div>
+    </div>
+</div>
 
-<label for="Upload files">Select files:</label>
-<iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
-<form action = "/user_id/upload_images" method = "POST" 
-    enctype = "multipart/form-data" target="dummyframe">
-         <input type = "file" id="files" name = "file[]" multiple/>
-         <input type = "submit"/>
-</form><br><br>
-<input type="text" id="search_bar" name="search_bar">
-<button text="search" type="button" class="btn btn-primary" onclick="get_result()">Search</button><br><br>
-
-<table id="result_table"></table>
 <script>
 
 function get_result(){
