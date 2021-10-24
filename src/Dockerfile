@@ -11,4 +11,4 @@ RUN pip install -r requirements.txt
 
 # Start Flask app along with .env settings
 EXPOSE 5000
-ENTRYPOINT ./bootstrap.sh
+CMD flask run -h 0.0.0.0
