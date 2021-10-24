@@ -22,7 +22,6 @@
         </div>
     </div>
 </div>
-
 <script>
 
 function get_result(){
@@ -41,8 +40,10 @@ function get_result(){
 }
 function process_result(res){
     //console.log(res);
-    $("#result_table tr").remove(); 
-    var add_string = "<tr><th>Store</th><th>Date</th><th>Item</th><th>Price</th></tr>"
+    
+    $("#result_table tr").remove();
+    if (res['data'] == null) return;
+    var add_string = "<tr><th>Store</th><th>Date</th><th>Item</th><th>Price</th><th>Count</th></tr>"
     for (const data of res['data']) {
         add_string += '<tr>';
         for (const d of data){

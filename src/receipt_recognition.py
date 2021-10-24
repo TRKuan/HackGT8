@@ -39,7 +39,7 @@ def get_items(receipt):
     item_info['price'] = item_total_price.value
     
     item_quantity = item.value.get("Quantity")
-    if item_quantity and item_quantity.confidence:
+    if item_quantity and item_quantity.confidence > 0.9:
       item_info['count'] = item_quantity.value
     
     merchant_name = receipt.fields.get('MerchantName')
