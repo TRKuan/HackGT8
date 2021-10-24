@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, url_for, jsonify
 from sqlalchemy.dialects.postgresql import UUID
 from flask_sqlalchemy import SQLAlchemy
@@ -33,6 +32,8 @@ class Item(db.Model):
         self.price = price
         self.catagory = catagory
 
+db.create_all()
+db.session.commit()
 
 @app.route('/')
 def index():
