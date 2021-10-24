@@ -58,7 +58,14 @@ def process_images():
   for file in files:
     #print (file,sys.stderr)
     fs = file.read()
-    res = get_items(fs)
+    try_round = 0
+    while try_round < 5:
+      try_round+=1
+      try:
+        res = get_items(fs)
+        break
+      except Exception as ex:
+        app.logger.info(ex)
     app.logger.info(res)
     for item in res:
       item_catagory = item['item_name'].lower()
@@ -66,7 +73,7 @@ def process_images():
         item_catagory = item_map[item_catagory]
       new_item = Item('16fd2706-8baf-433b-82eb-8c7fada847da', item['item_name'].lower(), item['price'], item_catagory)
       new_item.date = item['date'] if 'date' in item else None
-      new_item.count = int(item['count']) if 'count' in item else 1
+      new_item.count = int(item['count']) if 'count' in item and int(item['count']) > 0 else 1
       new_item.store_name = item['store_name'] if 'store_name' in item else None
       db.session.add(new_item)
       db.session.commit()
